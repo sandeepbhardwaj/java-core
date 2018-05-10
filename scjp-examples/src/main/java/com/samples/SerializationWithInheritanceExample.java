@@ -10,21 +10,18 @@ import java.io.Serializable;
 //superclass A 
 //A class doesn't implement Serializable
 //interface.
-class A 
-{
+class A {
 	int i;
 
 	// parameterized constructor
-	public A(int i)
-	{
+	public A(int i) {
 		this.i = i;
 	}
 
 	// default constructor
 	// this constructor must be present
 	// otherwise we will get runtime exception
-	public A()
-	{
+	public A() {
 		i = 50;
 		System.out.println("A's class constructor called");
 	}
@@ -33,13 +30,11 @@ class A
 
 // subclass B
 // implementing Serializable interface
-class B extends A implements Serializable
-{
+class B extends A implements Serializable {
 	int j;
 
 	// parameterized constructor
-	public B(int i, int j)
-	{
+	public B(int i, int j) {
 		super(i);
 		System.out.println("B.B()");
 		this.j = j;
@@ -47,10 +42,8 @@ class B extends A implements Serializable
 }
 
 // Driver class
-public class SerializationWithInheritanceExample
-{
-	public static void main(String[] args) throws Exception
-	{
+public class SerializationWithInheritanceExample {
+	public static void main(String[] args) throws Exception {
 		B b1 = new B(10, 20);
 
 		System.out.println("i = " + b1.i);
@@ -58,14 +51,13 @@ public class SerializationWithInheritanceExample
 
 		// Serializing B's(subclass) object
 		try (FileOutputStream fos = new FileOutputStream("abc.ser");
-				ObjectOutputStream oos = new ObjectOutputStream(fos))
-		{
+				ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 			// Method for serialization of B's class object
 			oos.writeObject(b1);
 		}
 
 		System.out.println("Object has been serialized\n");
-		
+
 		// Reading the object from a file
 		readObject();
 		readObject();
@@ -73,20 +65,18 @@ public class SerializationWithInheritanceExample
 
 	}
 
-	static void readObject()
-	{
+	static void readObject() {
 		// Reading the object from a file
-		try (FileInputStream fis = new FileInputStream("abc.ser"); ObjectInputStream ois = new ObjectInputStream(fis))
-		{
+		try (FileInputStream fis = new FileInputStream("abc.ser"); ObjectInputStream ois = new ObjectInputStream(fis)) {
 			// Method for de-serialization of B's class object
 			B b2 = (B) ois.readObject();
 
-			System.out.println("HasCode of A:"+ b2.getClass().getSuperclass().hashCode() +" | HasCode of B:"+b2.hashCode());
+			System.out.println(
+					"HasCode of A:" + b2.getClass().getSuperclass().hashCode() + " | HasCode of B:" + b2.hashCode());
 
 			System.out.println("i = " + b2.i);
 			System.out.println("j = " + b2.j);
-		} catch (IOException | ClassNotFoundException e)
-		{
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}

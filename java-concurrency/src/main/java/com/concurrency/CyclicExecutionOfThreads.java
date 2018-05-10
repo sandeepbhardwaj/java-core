@@ -5,11 +5,9 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CyclicExecutionOfThreads
-{
+public class CyclicExecutionOfThreads {
 
-	public static void main(String args[])
-	{
+	public static void main(String args[]) {
 
 		int totalNumOfThreads = 10;
 		PrintJob printJob = new PrintJob(totalNumOfThreads);
@@ -31,8 +29,7 @@ public class CyclicExecutionOfThreads
 		ExecutorService executorService = Executors.newFixedThreadPool(totalNumOfThreads);
 		Set<Runnable> runnables = new HashSet<Runnable>();
 
-		for (int i = 1; i <= totalNumOfThreads; i++)
-		{
+		for (int i = 1; i <= totalNumOfThreads; i++) {
 			MyRunnable command = new MyRunnable(printJob, i);
 			runnables.add(command);
 			executorService.execute(command);
@@ -42,34 +39,26 @@ public class CyclicExecutionOfThreads
 	}
 }
 
-class MyRunnable implements Runnable
-{
+class MyRunnable implements Runnable {
 
 	PrintJob printJob;
 	int threadNum;
 
-	public MyRunnable(PrintJob job, int threadNum)
-	{
+	public MyRunnable(PrintJob job, int threadNum) {
 		this.printJob = job;
 		this.threadNum = threadNum;
 	}
 
 	@Override
-	public void run()
-	{
-		while (true)
-		{
-			synchronized (printJob)
-			{
-				if (threadNum == printJob.counter)
-				{
+	public void run() {
+		while (true) {
+			synchronized (printJob) {
+				if (threadNum == printJob.counter) {
 					printJob.printStuff();
 
-					if (printJob.counter != printJob.totalNumOfThreads)
-					{
+					if (printJob.counter != printJob.totalNumOfThreads) {
 						printJob.counter++;
-					} else
-					{
+					} else {
 
 						System.out.println();
 						// reset the counter
@@ -78,13 +67,10 @@ class MyRunnable implements Runnable
 
 					printJob.notifyAll();
 
-				} else
-				{
-					try
-					{
+				} else {
+					try {
 						printJob.wait();
-					} catch (InterruptedException e)
-					{
+					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
@@ -94,31 +80,25 @@ class MyRunnable implements Runnable
 	}
 }
 
-class PrintJob
-{
+class PrintJob {
 	int counter = 1;
 	int totalNumOfThreads;
 
-	PrintJob(int totalNumOfThreads)
-	{
+	PrintJob(int totalNumOfThreads) {
 		this.totalNumOfThreads = totalNumOfThreads;
 	}
 
-	public void printStuff()
-	{
+	public void printStuff() {
 		System.out.println("Thread " + Thread.currentThread().getName() + " is printing");
 
-		try
-		{
+		try {
 			Thread.sleep(1000);
-		} catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void resetCounter()
-	{
+	public void resetCounter() {
 		this.counter = 1;
 	}
 }

@@ -1,10 +1,8 @@
 package com.concurrency.lock;
 
-public class TryLockExample
-{
+public class TryLockExample {
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		Resource resource = new Resource();
 		Task task = new Task(resource);
 

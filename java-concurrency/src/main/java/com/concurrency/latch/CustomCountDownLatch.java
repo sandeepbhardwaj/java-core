@@ -2,22 +2,19 @@ package com.concurrency.latch;
 
 /**
  * Custom CoundDownLach implementation
+ * 
  * @author sandeep
  *
  */
-public class CustomCountDownLatch
-{
+public class CustomCountDownLatch {
 	int counter;
 
-	public CustomCountDownLatch(int counter)
-	{
+	public CustomCountDownLatch(int counter) {
 		this.counter = counter;
 	}
 
-	public synchronized void await() throws InterruptedException
-	{
-		if (counter > 0)
-		{
+	public synchronized void await() throws InterruptedException {
+		if (counter > 0) {
 			wait();
 		}
 	}
@@ -25,11 +22,9 @@ public class CustomCountDownLatch
 	/**
 	 * method will decrement the counter by 1 each time
 	 */
-	public synchronized void countDown()
-	{
+	public synchronized void countDown() {
 		counter--;
-		if (counter == 0)
-		{
+		if (counter == 0) {
 			notifyAll();
 		}
 	}

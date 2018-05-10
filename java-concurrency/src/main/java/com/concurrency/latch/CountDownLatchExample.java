@@ -2,11 +2,9 @@ package com.concurrency.latch;
 
 import java.util.concurrent.CountDownLatch;
 
-public class CountDownLatchExample
-{
+public class CountDownLatchExample {
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		CountDownLatch latch = new CountDownLatch(3);
 
 		Waiter waiter = new Waiter(latch);
@@ -15,11 +13,9 @@ public class CountDownLatchExample
 		new Thread(waiter).start();
 		new Thread(decrementer).start();
 
-		try
-		{
+		try {
 			Thread.sleep(4000);
-		} catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 

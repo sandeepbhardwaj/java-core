@@ -4,35 +4,27 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Task
-{
+public class Task {
 
 	private Resource resource;
 	private Lock lock;
 
-	public Task(Resource r)
-	{
+	public Task(Resource r) {
 		this.resource = r;
 		this.lock = new ReentrantLock();
 	}
 
-	public void performTask()
-	{
-		try
-		{
+	public void performTask() {
+		try {
 			boolean flag = lock.tryLock(3, TimeUnit.SECONDS);
-			if (flag)
-			{
-				try
-				{
+			if (flag) {
+				try {
 					resource.doSomething();
-				} finally
-				{
+				} finally {
 					lock.unlock();
 				}
 			}
-		} catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		resource.doLogging();

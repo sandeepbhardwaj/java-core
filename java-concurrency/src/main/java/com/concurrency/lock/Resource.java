@@ -1,22 +1,17 @@
 package com.concurrency.lock;
 
-public class Resource
-{
+public class Resource {
 
-	public void doSomething()
-	{
+	public void doSomething() {
 		System.out.println("Resource.doSomething()");
-		try
-		{
+		try {
 			Thread.sleep(10000);
-		} catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void doLogging()
-	{
+	public void doLogging() {
 		System.out.println("Resource.doLogging()");
 	}
 }

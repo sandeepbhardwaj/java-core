@@ -1,41 +1,35 @@
 package com.concurrency.threadlocal;
 
-import java.text.SimpleDateFormat;
-import java.util.Random;
+public class ThreadLocalExample {
 
-public class ThreadLocalExample implements Runnable {
+	public static class MyRunnable implements Runnable {
 
-	// SimpleDateFormat is not thread-safe, so give one to each thread
-	private static final ThreadLocal<SimpleDateFormat> formatter = new ThreadLocal<SimpleDateFormat>() {
+		private ThreadLocal<Integer> threadLocal = new ThreadLocal<Integer>();
+
 		@Override
-		protected SimpleDateFormat initialValue() {
-			return new SimpleDateFormat("yyyyMMdd HHmm");
-		}
-	};
+		public void run() {
+			threadLocal.set((int) (Math.random() * 100D));
 
-	public static void main(String[] args) throws InterruptedException {
-		ThreadLocalExample obj = new ThreadLocalExample();
-		for (int i = 0; i < 10; i++) {
-			Thread t = new Thread(obj, "" + i);
-			Thread.sleep(new Random().nextInt(1000));
-			t.start();
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+			}
+
+			System.out.println(threadLocal.get());
 		}
 	}
 
-	@Override
-	public void run() {
-		System.out.println("Thread Name= " + Thread.currentThread().getName() + " default Formatter = "
-				+ formatter.get().toPattern());
-		try {
-			Thread.sleep(new Random().nextInt(1000));
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	public static void main(String[] args) throws InterruptedException {
+		MyRunnable sharedRunnableInstance = new MyRunnable();
 
-		formatter.set(new SimpleDateFormat());
+		Thread thread1 = new Thread(sharedRunnableInstance);
+		Thread thread2 = new Thread(sharedRunnableInstance);
 
-		System.out.println(
-				"Thread Name= " + Thread.currentThread().getName() + " formatter = " + formatter.get().toPattern());
+		thread1.start();
+		thread2.start();
+
+		thread1.join(); // wait for thread 1 to terminate
+		thread2.join(); // wait for thread 2 to terminate
 	}
 
 }
